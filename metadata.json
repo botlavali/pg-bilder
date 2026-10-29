@@ -1,0 +1,6 @@
+{
+  "name": "PG Builder - Multi-Tenant PG Website & Hostel Management SaaS",
+  "description": "Multi-tenant SaaS platform to create and manage PG hostel websites with live room/bed booking, phone OTP verification, UPI payment reconciliation, resident lookup, and automated rent reminder notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,157 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile containing authentication and role metadata (admin, owner, customer).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "owner", "customer"] },
+        "businessName": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "phone", "role"]
+    },
+    "Property": {
+      "title": "Property",
+      "description": "A PG or Hostel property on the multi-tenant platform.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "tagline": { "type": "string" },
+        "description": { "type": "string" },
+        "genderType": { "type": "string", "enum": ["gents", "ladies", "coliving"] },
+        "address": { "type": "string" },
+        "area": { "type": "string" },
+        "city": { "type": "string" },
+        "pincode": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "upiId": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"] },
+        "publishedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "slug", "genderType", "address", "city", "contactPhone", "upiId", "status"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Resident room and bed reservation records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookingReference": { "type": "string" },
+        "pgId": { "type": "string" },
+        "pgName": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "roomNumber": { "type": "string" },
+        "bedLabel": { "type": "string" },
+        "sharingType": { "type": "string" },
+        "status": { "type": "string", "enum": ["requested", "held", "confirmed", "checked-in", "checked-out", "completed", "cancelled"] },
+        "paymentStatus": { "type": "string", "enum": ["pending", "succeeded", "failed", "partial"] },
+        "monthlyRent": { "type": "number" },
+        "totalPaid": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "bookingReference", "pgId", "customerName", "customerPhone", "roomNumber", "status", "monthlyRent"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Transaction and rent payment receipt records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pgId": { "type": "string" },
+        "bookingId": { "type": "string" },
+        "bookingReference": { "type": "string" },
+        "payerName": { "type": "string" },
+        "payerPhone": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentType": { "type": "string", "enum": ["advance", "monthly_rent", "security_deposit"] },
+        "paymentMode": { "type": "string", "enum": ["upi", "cash", "bank_transfer"] },
+        "transactionReference": { "type": "string" },
+        "status": { "type": "string", "enum": ["succeeded", "pending", "failed"] },
+        "recordedAt": { "type": "string" },
+        "receiptNumber": { "type": "string" }
+      },
+      "required": ["id", "pgId", "bookingId", "amount", "paymentType", "paymentMode", "status", "recordedAt", "receiptNumber"]
+    },
+    "Reminder": {
+      "title": "Reminder",
+      "description": "Dispatched rent and booking notification messages.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pgId": { "type": "string" },
+        "residentName": { "type": "string" },
+        "residentPhone": { "type": "string" },
+        "residentEmail": { "type": "string" },
+        "channel": { "type": "string", "enum": ["whatsapp", "sms", "email"] },
+        "templateType": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "sentAt": { "type": "string" }
+      },
+      "required": ["id", "pgId", "residentName", "residentPhone", "channel", "title", "message", "status", "sentAt"]
+    },
+    "MaintenanceRequest": {
+      "title": "MaintenanceRequest",
+      "description": "Resident-reported room and facility issues tracked by owners.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pgId": { "type": "string" },
+        "pgName": { "type": "string" },
+        "bookingId": { "type": "string" },
+        "residentName": { "type": "string" },
+        "residentPhone": { "type": "string" },
+        "roomNumber": { "type": "string" },
+        "bedLabel": { "type": "string" },
+        "category": { "type": "string", "enum": ["plumbing", "electrical", "wifi", "carpentry", "cleaning", "appliance", "pest_control", "other"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "status": { "type": "string", "enum": ["pending", "in-progress", "resolved"] },
+        "createdAt": { "type": "string" },
+        "resolvedAt": { "type": "string" },
+        "assignedStaff": { "type": "string" },
+        "resolutionNotes": { "type": "string" }
+      },
+      "required": ["id", "pgId", "residentName", "residentPhone", "roomNumber", "category", "title", "description", "priority", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and credentials"
+    },
+    "/properties/{propertyId}": {
+      "schema": "Property",
+      "description": "Public and private property configurations"
+    },
+    "/properties/{propertyId}/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Room and bed reservations for each property"
+    },
+    "/properties/{propertyId}/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Payment transactions and receipts"
+    },
+    "/properties/{propertyId}/reminders/{reminderId}": {
+      "schema": "Reminder",
+      "description": "SMS, WhatsApp and email notices sent to residents"
+    },
+    "/properties/{propertyId}/maintenance/{requestId}": {
+      "schema": "MaintenanceRequest",
+      "description": "Maintenance and repair issue requests for each PG property"
+    }
+  }
+}
